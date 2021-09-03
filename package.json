@@ -1,0 +1,23 @@
+{
+  "name": "spotify-api-challenge",
+  "version": "0.0.1",
+  "description": "A simple API for storing metadata for music tracks from the Spotify API",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjb9774/spotify-api-challenge.git"
+  },
+  "author": "Stephen Biston",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sjb9774/spotify-api-challenge/issues"
+  },
+  "homepage": "https://github.com/sjb9774/spotify-api-challenge#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "sequelize": "^6.6.5"
+  }
+}
