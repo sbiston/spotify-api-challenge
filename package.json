@@ -2,9 +2,11 @@
   "name": "spotify-api-challenge",
   "version": "0.0.1",
   "description": "A simple API for storing metadata for music tracks from the Spotify API",
-  "main": "index.js",
+  "main": "serve.js",
   "scripts": {
-    "db-up": "node db-up.js"
+    "start": "npm run serve",
+    "serve": "node serve.js",
+    "db:sync": "node db-sync.js"
   },
   "repository": {
     "type": "git",

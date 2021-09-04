@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { sequelize } = require('./db.js');
 require('./models.js');
 
