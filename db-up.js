@@ -1,7 +1,7 @@
-const { database } = require('./db.js');
+const { sequelize } = require('./db.js');
 require('./models.js');
 
-database.sync({force: true}).then(() => { 
+sequelize.sync({force: true}).then(() => { 
     console.log("Database synced!");
     process.exit(0);
-})
+});

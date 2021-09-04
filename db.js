@@ -13,6 +13,6 @@ const auth = async () => {
     }    
 }
 
-auth()
+auth();
 
-module.exports = {database: sequelize}
+module.exports = { sequelize };

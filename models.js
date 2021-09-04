@@ -1,4 +1,4 @@
-const { database } = require('./db.js');
+const { sequelize } = require('./db.js');
 const { DataTypes, Model } = require('sequelize');
 
 class Artist extends Model {}
@@ -16,7 +16,7 @@ Artist.init({
         type: DataTypes.STRING
     }
 }, {
-    sequelize: database,
+    sequelize,
     modelName: 'Artist'
 });
 
@@ -39,7 +39,7 @@ Track.init({
         allowNull: false
     }
 }, {
-    sequelize: database,
+    sequelize,
     modelName: 'Track'
 });
 
@@ -65,6 +65,6 @@ Metadata.init({
        allowNull: false
    }
 }, {
-    sequelize: database,
+    sequelize,
     modelName: 'Metadata'
 });
