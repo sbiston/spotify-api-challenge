@@ -4,6 +4,8 @@ services:
     image: 'mysql:latest'
     ports:
       - 3306:3306
+    volumes:
+      - mysql:/var/lib/db
 
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_pw
@@ -12,6 +14,9 @@ services:
     secrets:
       - mysql_root_pw
       - mysql_database
+
+volumes:
+  mysql:
 
 secrets:
   mysql_root_pw:

@@ -11,6 +11,4 @@ const auth = async () => {
     }    
 }
 
-auth();
-
 module.exports = { sequelize };

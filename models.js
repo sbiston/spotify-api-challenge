@@ -17,7 +17,7 @@ Artist.init({
     }
 }, {
     sequelize,
-    modelName: 'Artist'
+    modelName: 'artist'
 });
 
 Track.init({
@@ -26,21 +26,13 @@ Track.init({
         allowNull: false,
         primaryKey: true
     },
-    artistId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        references: {
-            model: Artist,
-            key: 'entityId'
-        }
-    },
     isrc: {
         type: DataTypes.STRING,
         allowNull: false
     }
 }, {
     sequelize,
-    modelName: 'Track'
+    modelName: 'track'
 });
 
 Metadata.init({
@@ -48,14 +40,6 @@ Metadata.init({
        type: DataTypes.STRING,
        allowNull: false,
        primaryKey: true
-   },
-   trackId: {
-       type: DataTypes.STRING,
-       allowNull: true,
-       references: {
-           model: Track,
-           key: 'entityId'
-       }
    },
    imageUri: {
        type: DataTypes.STRING,
@@ -66,5 +50,16 @@ Metadata.init({
    }
 }, {
     sequelize,
-    modelName: 'Metadata'
+    modelName: 'metadata'
 });
+
+Track.hasOne(Artist);
+Artist.belongsTo(Track);
+Track.hasOne(Metadata);
+Metadata.belongsTo(Track);
+
+module.exports = {
+    Artist,
+    Track,
+    Metadata
+}
