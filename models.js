@@ -8,9 +8,10 @@ class Metadata extends Model {}
 
 Artist.init({
     entityId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     name: {
         type: DataTypes.STRING
@@ -22,9 +23,10 @@ Artist.init({
 
 Track.init({
     entityId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     isrc: {
         type: DataTypes.STRING,
@@ -37,9 +39,10 @@ Track.init({
 
 Metadata.init({
    entityId: {
-       type: DataTypes.STRING,
+       type: DataTypes.INTEGER,
        allowNull: false,
-       primaryKey: true
+       primaryKey: true,
+       autoIncrement: true
    },
    imageUri: {
        type: DataTypes.STRING,
