@@ -4,12 +4,22 @@ const SpotifyClient = require('./spotify-client.js');
 const { Track, Artist, Metadata } = require('./models.js');
 const { Op } = require("sequelize");
 
+const getDataResultRecordForTrack = async (track) => {
+    let artist = await track.getArtist();
+    let metadata = await track.getMetadatum();
+    return {
+        track: track.dataValues,
+        metadata: metadata.dataValues,
+        artist: artist.dataValues
+    }
+}
+
 router.post('/trackByIsrc/:isrc', async (req, res) => {
     var client = new SpotifyClient({clientId: process.env.SPOTIFY_CLIENT_ID, clientSecret: process.env.SPOTIFY_CLIENT_SECRET});
     const results = await client.getTrackByIsrc(req.params.isrc);
 
-    if (!results.items) {
-        return res.status(400).send(`No results found for ISRC ${req.params.isrc}`);
+    if (!results.tracks.items) {
+        return res.status(400).send({message: `No results found for ISRC ${req.params.isrc}`});
     }
 
     // per requirements, only store the most popular track for a given request
@@ -26,11 +36,14 @@ router.post('/trackByIsrc/:isrc', async (req, res) => {
     let title = mostPopularTrack.name;
 
     if (await Track.findOne({where: {isrc: req.params.isrc}})) {
-        return res.status(422).send('ISRC already stored');
+        return res.status(422).send({message: 'ISRC already stored'});
     }
     let track = await Track.create({
         isrc: req.params.isrc,
     });
+
+    // always create a new artist record, per reqs the relation is Track as the parent, Artist as the child
+    // not how I'd intuitively structure this
     let artist = await Artist.create({
         name: artistNameList,
         trackEntityId: track.entityId
@@ -40,16 +53,15 @@ router.post('/trackByIsrc/:isrc', async (req, res) => {
         title: title,
         trackEntityId: track.entityId
     });
-    return res.send(`Stored track for ISRC "${req.params.isrc}"`);
+    return res.send({message: `Stored track for ISRC ${req.params.isrc}`, result: await getDataResultRecordForTrack(track)});
 });
 
 router.get('/trackByIsrc/:isrc', async (req, res) => {
-    let matchingTrack = await Track.findOne({where: {isrc: req.params.isrc}, include: Metadata});
+    let matchingTrack = await Track.findOne({where: {isrc: req.params.isrc}});
     if (matchingTrack) {
-        let metadata = matchingTrack.metadatum
-        return res.status(200).send(metadata.dataValues);
+        return res.status(200).send(await getDataResultRecordForTrack(matchingTrack))
     }
-    return res.status(404).send('ISRC does not match any stored track');
+    return res.status(404).send({message: 'ISRC does not match any stored track'});
 });
 
 router.get('/trackByArtist/:artist', async (req, res) => {
@@ -58,16 +70,7 @@ router.get('/trackByArtist/:artist', async (req, res) => {
         let results = {tracks: []};
         for (const matchingArtist of matchingArtists) {
             let track = await matchingArtist.getTrack();
-            let metadata = await track.getMetadatum();
-            results.tracks.push({
-                ...track.dataValues,
-                metadata: {
-                    ...metadata.dataValues
-                },
-                artist: {
-                    ...matchingArtist.dataValues
-                }
-            });
+            results.tracks.push(await getDataResultRecordForTrack(track));
         }
             
         return res.status(200).set('Content-type', 'application/json').send(results);
