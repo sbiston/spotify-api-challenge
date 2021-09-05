@@ -1,5 +1,5 @@
-const app = require('./app.js');
-const api = require('./api.js');
+const app = require('./app/app.js');
+const api = require('./app/api.js');
 
 app.use(`/api/v${process.env.API_VERSION}`, api);
 
