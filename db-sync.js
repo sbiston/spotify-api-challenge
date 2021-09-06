@@ -1,5 +1,7 @@
-const { sequelize } = require('./db.js');
-require('./models.js');
+require("dotenv").config();
+
+const { sequelize } = require('./app/db.js');
+require('./app/models.js');
 
 sequelize.sync({force: true}).then(() => { 
     console.log("Database synced!");

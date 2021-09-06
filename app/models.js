@@ -8,31 +8,25 @@ class Metadata extends Model {}
 
 Artist.init({
     entityId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     },
     name: {
         type: DataTypes.STRING
     }
 }, {
     sequelize,
-    modelName: 'Artist'
+    modelName: 'artist'
 });
 
 Track.init({
     entityId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true
-    },
-    artistId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        references: {
-            model: Artist,
-            key: 'entityId'
-        }
+        primaryKey: true,
+        autoIncrement: true
     },
     isrc: {
         type: DataTypes.STRING,
@@ -40,22 +34,15 @@ Track.init({
     }
 }, {
     sequelize,
-    modelName: 'Track'
+    modelName: 'track'
 });
 
 Metadata.init({
    entityId: {
-       type: DataTypes.STRING,
+       type: DataTypes.INTEGER,
        allowNull: false,
-       primaryKey: true
-   },
-   trackId: {
-       type: DataTypes.STRING,
-       allowNull: true,
-       references: {
-           model: Track,
-           key: 'entityId'
-       }
+       primaryKey: true,
+       autoIncrement: true
    },
    imageUri: {
        type: DataTypes.STRING,
@@ -66,5 +53,16 @@ Metadata.init({
    }
 }, {
     sequelize,
-    modelName: 'Metadata'
+    modelName: 'metadata'
 });
+
+Track.hasOne(Artist);
+Artist.belongsTo(Track);
+Track.hasOne(Metadata);
+Metadata.belongsTo(Track);
+
+module.exports = {
+    Artist,
+    Track,
+    Metadata
+}
