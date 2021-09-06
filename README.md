@@ -17,3 +17,8 @@ This project uses NodeJS 12, I recommend using `nvm` to assist in managing multi
 3. Run the MySQL database, for the provided Docker database simply run `docker-compose up`
 4. Initialize the API database by running `npm run db:sync`
 5. Run the API server with `npm start`
+
+
+## API Usage
+
+See https://app.swaggerhub.com/apis/sjb9774/spotify-api-challenge/0.0.1
