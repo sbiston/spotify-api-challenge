@@ -53,7 +53,7 @@ router.post('/trackByIsrc/:isrc', async (req, res) => {
         title: title,
         trackEntityId: track.entityId
     });
-    return res.send({message: `Stored track for ISRC ${req.params.isrc}`, result: await getDataResultRecordForTrack(track)});
+    return res.status(200).send({message: `Stored track for ISRC ${req.params.isrc}`, result: await getDataResultRecordForTrack(track)});
 });
 
 router.get('/trackByIsrc/:isrc', async (req, res) => {
